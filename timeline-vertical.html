@@ -47,26 +47,18 @@ $.widget('pi.timeline', {
 			if (this.options.data[i].date > lastDate) { lastDate = this.options.data[i].date; }
 			else if (this.options.data[i].date < firstDate) { firstDate = this.options.data[i].date; }
 		}
+		var maxSegSpace = 32;
 		var dayRange = (lastDate - firstDate) / miliConstant;
 		var segSpace = Math.floor(this.options.height / (dayRange / 7));
-		var segLength = 7;
-		if (segSpace < 80) {
-			var segSpace = Math.floor(this.options.height / (dayRange / 14));
-			segLength = 14;
-		}
-		if (segSpace < 80) {
-			var segSpace = Math.floor(this.options.height / (dayRange / 28));
-			segLength = 28;
-		}
-		if (segSpace < 80) {
-			var segSpace = Math.floor(this.options.height / (dayRange / 56));
-			segLength = 56;
-		}
-		if (segSpace < 80) {
-			var segSpace = Math.floor(this.options.height / (dayRange / 112));
-			segLength = 112;
-		}
-
+		var segLength = 7;		
+		if (segSpace < maxSegSpace) {segLength*=2;}		
+		if (segSpace < maxSegSpace) {segLength*=2;}		
+		if (segSpace < maxSegSpace) {segLength*=2;}		
+		if (segSpace < maxSegSpace) {segLength*=2;}
+		if (segSpace < maxSegSpace) {segLength*=2;}
+		if (segSpace < maxSegSpace) {segLength*=2;}
+		
+		var segSpace = Math.floor(this.options.height / (dayRange / segLength));
 		var majorCount = Math.floor(this.options.height / segSpace) + 1;
 
 		//Empty Current Element
