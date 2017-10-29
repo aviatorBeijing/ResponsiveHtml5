@@ -67,12 +67,35 @@ $.widget('pi.timeline', {
 		//Draw TimeLine
 		this.element.append("<div class='tlLine' style='height: " + this.options.height + "px;'></div>")
 
-		//Draw Major Markers
-		var tempDate = new Date(firstDate.getTime());
+		//Draw Major Markers		
+		var tempDate = new Date(lastDate.getTime()), 
+			tempYear=tempDate.getYear(), tempMonth=tempDate.getMonth(),
+			yearChanged=false, monthChanged=false;
 		for (i=0;i<majorCount;i++) {
 			this.element.append("<div class='tlMajor' style='top: " + ((segSpace * i) - 7) + "px;'></div>");
-			this.element.append("<span class='tlDateLabel' style='top: " + ((segSpace * i) - 7) + "px;'>" +  $.datepicker.formatDate( "d M y", tempDate) + "</span>");
-			tempDate.setDate(tempDate.getDate() + segLength);
+			var jqueryDate = $.datepicker.formatDate( "yy", tempDate);
+			if ( i>0 && !yearChanged ){
+				jqueryDate = $.datepicker.formatDate( "MM", tempDate);
+			}
+			if ( i>0 && !yearChanged && !monthChanged){
+				jqueryDate = "";
+			}
+			this.element.append("<span class='tlDateLabel' style='top: " + ((segSpace * i) - 7) + "px;'>" +  jqueryDate + "</span>");
+			tempDate.setDate(tempDate.getDate() - segLength);
+			if( tempYear != tempDate.getYear() ){ 
+				yearChanged = true;
+				tempYear = tempDate.getYear();
+			}	
+			else{
+				yearChanged = false;
+			}
+			if( tempMonth != tempDate.getMonth() ){ 
+				monthChanged = true;
+				tempMonth = tempDate.getMonth();
+			}	
+			else{
+				monthChanged = false;
+			}			
 		}
 
 		//draw event markers
